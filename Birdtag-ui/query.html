@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Query File Info - BirdTag</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 50px;
+        }
+
+        input, button {
+            padding: 10px;
+            margin: 5px 0;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Query File Info</h2>
+
+    <input type="text" id="fileIdInput" placeholder="Enter File ID">
+    <button onclick="queryFileInfo()">Query</button>
+
+    <script>
+        function queryFileInfo() {
+            const fileId = document.getElementById('fileIdInput').value.trim();
+
+            if (!fileId) {
+                alert("Please enter File ID.");
+                return;
+            }
+
+            window.location.href = `result.html?file_id=${encodeURIComponent(fileId)}`;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>BirdTag Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #c2e9fb, #81a4fd);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background-color: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      width: 400px;
+    }
+
+    h2 {
+      margin-bottom: 30px;
+    }
+
+    button {
+      display: block;
+      width: 100%;
+      padding: 15px;
+      margin: 12px 0;
+      font-size: 16px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .logout {
+      background-color: #d9534f;
+    }
+
+    .logout:hover {
+      background-color: #c9302c;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Welcome to BirdTag</h2>
+    <p>Select an action:</p>
+    <button onclick="location.href='upload.html'">📤 Upload Files</button>
+    <button onclick="location.href='query.html'">❓ Submit Queries</button>
+    <button onclick="location.href='result.html'">📊 View Query Results</button>
+    <button class="logout" onclick="location.href='logout.html'">🚪 Sign Out</button>
+  </div>
+ <!-- Add OAuth code -> token handling script -->
+  <script>
+    (async function handleOAuthCallback() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const code = urlParams.get('code');
+
+      if (code) {
+        console.log("Found code:", code);
+
+        const clientId = "4quucr17sofk8c874jlhm29g0o"; 
+        const redirectUri = "http://localhost:5500/Birdtag-ui/dashboard.html";
+        const tokenUrl = "https://birdtag-auth-ui.auth.us-east-1.amazoncognito.com/oauth2/token";
+        const clientSecret = "bim9cvkkua3443kam6vrr5jar1umu8p0rmdi6b8c520r9knm42r";
+
+        const body = new URLSearchParams({
+          grant_type: 'authorization_code',
+          client_id: clientId,
+          code: code,
+          redirect_uri: redirectUri
+        });
+
+        const basicAuth = btoa(`${clientId}:${clientSecret}`);
+
+        try {
+          const response = await fetch(tokenUrl, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+              'Authorization': `Basic ${basicAuth}`
+            },
+            body: body.toString()
+          });
+          console.log("Response status:", response.status); 
+          console.log("Response headers:", response.headers); 
+  
+
+          const data = await response.json();
+          console.log("Token response:", data);
+
+          if (data.id_token) {
+            localStorage.setItem("id_token", data.id_token);
+            localStorage.setItem("access_token", data.access_token);
+            alert("Login successful! Tokens saved.");
+            // 清除 URL 中的 code 参数
+            window.history.replaceState({}, document.title, redirectUri);
+          } else {
+            alert("Failed to obtain tokens.");
+          }
+        } catch (error) {
+          console.error("Error exchanging code for tokens:", error);
+        }
+      }
+    })();
+  </script>
+</body>
+</html>

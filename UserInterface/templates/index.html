@@ -1,0 +1,229 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card-grid">
+    {% if current_user.is_authenticated %}
+        <a href="{{ url_for('upload') }}" class="card" title="Upload new images to the system">
+            <div class="card-content">
+                <img src="{{ url_for('static', filename='images/upload-icon.png') }}" alt="Upload" class="card-icon">
+                <span class="card-title">Upload</span>
+            </div>
+        </a>
+    {% else %}
+        <a href="{{ url_for('login') }}" class="card" title="Please login to upload images">
+            <div class="card-content">
+                <img src="{{ url_for('static', filename='images/upload-icon.png') }}" alt="Upload" class="card-icon">
+                <span class="card-title">Upload</span>
+            </div>
+        </a>
+    {% endif %}
+    
+    {% if current_user.is_authenticated %}
+        <a href="{{ url_for('search') }}" class="card" title="Search for images in the system">
+            <div class="card-content">
+                <img src="{{ url_for('static', filename='images/search-icon.png') }}" alt="Search" class="card-icon">
+                <span class="card-title">Search</span>
+            </div>
+        </a>
+    {% else %}
+        <a href="{{ url_for('login') }}" class="card" title="Please login to search images">
+            <div class="card-content">
+                <img src="{{ url_for('static', filename='images/search-icon.png') }}" alt="Search" class="card-icon">
+                <span class="card-title">Search</span>
+            </div>
+        </a>
+    {% endif %}
+    
+    <a href="{{ url_for('subscription') }}" class="card" title="Subscribe to tags and receive notifications for new images">
+        <div class="card-content">
+            <img src="{{ url_for('static', filename='images/subscription.png') }}" alt="Subscribe" class="card-icon">
+            <span class="card-title">Subscribe</span>
+        </div>
+    </a>
+
+    {% if current_user.is_authenticated %}
+        <a href="{{ url_for('management') }}" class="card" title="Manage and delete images">
+            <div class="card-content">
+                <img src="{{ url_for('static', filename='images/management-icon.png') }}" alt="Management" class="card-icon">
+                <span class="card-title">Management</span>
+            </div>
+        </a>
+    {% else %}
+        <a href="{{ url_for('login') }}" class="card" title="Please login to manage images">
+            <div class="card-content">
+                <img src="{{ url_for('static', filename='images/management-icon.png') }}" alt="Management" class="card-icon">
+                <span class="card-title">Management</span>
+            </div>
+        </a>
+    {% endif %}
+</div>
+
+<!-- Project introduction area, inserted below the card area -->
+<div class="project-description">
+    <h2>Introduction</h2>
+    <p> BirdTag is a serverless media storage and automatic tagging system based on AWS. Users can upload photos, audio and videos of birds, and the system will automatically identify and tag species, and store files and metadata securely in S3 and DynamoDB for subsequent retrieval and management.</p>
+    <p>   </p>
+    <h3>Core Functions: </h3>
+    <p>        • Automatic species identification: After uploading, Lambda calls the pre-trained model to automatically add bird tags to media files </p>
+    <p>        • Thumbnail generation: Automatically generate compressed previews for uploaded images to improve loading speed</p>
+    <p>        • Tag query: Supports query by species name and quantity combination to quickly locate required files</p>
+    <p>        • Manual tag editing: Users can add, delete, and adjust tags, and flexibly correct identification results</p>
+    <p>        • Subscription notification: Subscribe to specified species tags, and receive email notifications when new files meet the conditions</p>
+    <p>        • Permission management: Use Cognito for authentication to ensure that only logged-in users can upload, edit, and manage files</p>
+
+    <h3>Team Members</h3>
+    <ul>
+        <li>Chaoyang Zheng(34665099)</li>
+        <li>Tianyi Song(34621830)</li>
+        <li>Xi He(31159214)<li>
+        <li>Yuchen Chi (33782695)</li>
+    </ul>
+</div>
+
+<!-- CSS styles retained as is + new introduction styles -->
+<style>
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(to bottom right, #d0f0fd, #b0d4f7, #8ecae6);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.card {
+    aspect-ratio: 1;
+    background: #000;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.card-content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    transition: all 0.3s ease;
+}
+
+.card-icon {
+    width: 75%;
+    height: 75%;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+    transition: all 0.3s ease;
+}
+
+.card:hover .card-icon {
+    transform: scale(1.1);
+    width: 85%;
+    height: 85%;
+}
+
+.card-title {
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 500;
+    text-align: center;
+    margin-top: auto;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+}
+
+.card:hover .card-title {
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+/* Tooltip Style */
+.card::after {
+    content: attr(title);
+    position: absolute;
+    bottom: -1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.8);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    pointer-events: none;
+    max-width: 90%;
+    text-align: center;
+}
+
+.card:hover::after {
+    opacity: 1;
+    visibility: visible;
+    bottom: -0.1rem;
+}
+
+/* Added new introduction area style */
+.project-description {
+    max-width: 1000px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.project-description h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.project-description h3 {
+    font-size: 1.3rem;
+    margin-top: 1.5rem;
+    color: #444;
+}
+
+.project-description p {
+    font-size: 1.05rem;
+    color: #555;
+}
+
+.project-description ul {
+    list-style-type: none;
+    padding: 0;
+    margin-top: 0.5rem;
+}
+
+.project-description li {
+    font-size: 1rem;
+    color: #333;
+    margin: 0.25rem 0;
+}
+</style>
+{% endblock %}

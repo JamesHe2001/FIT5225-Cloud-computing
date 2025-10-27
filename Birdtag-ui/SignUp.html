@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>BirdTag - Register</title>
+  <link rel="stylesheet" href="../css/common.css" />
+  <script src="https://cdn.jsdelivr.net/npm/amazon-cognito-identity-js@6.2.0/dist/amazon-cognito-identity.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #89f7fe, #66a6ff);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .main-box {
+      width: 400px;
+      background-color: #ffffff;
+      padding: 30px 40px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.15);
+      text-align: center;
+    }
+
+    .main-box img {
+      width: 180px;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      margin-bottom: 25px;
+      color: #333;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      font-size: 16px;
+      box-sizing: border-box;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #0077c8;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 6px;
+      font-size: 16px;
+      box-sizing: border-box;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background-color: #005fa3;
+    }
+
+    .error {
+      color: red;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    .login-link {
+      margin-top: 15px;
+      display: block;
+      color: #0077c8;
+      text-decoration: none;
+    }
+
+    .login-link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="main-box">
+    <img src="../Picture/MonashLogo.png" alt="Monash Logo" />
+    <h2>Create Your Account</h2>
+
+    <input type="text" id="firstname" placeholder="First Name" required />
+    <input type="text" id="lastname" placeholder="Last Name" required />
+    <input type="email" id="email" placeholder="Email" required />
+    <input type="password" id="password" placeholder="Password" required />
+
+    <button onclick="register()">Register</button>
+
+    <p id="message" class="error"></p>
+
+    <a href="login.html" class="login-link">Already have an account? Login here</a>
+  </div>
+
+  <script>
+    function register() {
+      const firstname = document.getElementById("firstname").value.trim();
+      const lastname = document.getElementById("lastname").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+      const message = document.getElementById("message");
+      message.textContent = "";
+      message.style.color = "red";
+
+      if (!firstname || !lastname || !email || !password) {
+        message.textContent = "Please fill in all fields.";
+        return;
+      }
+
+      const poolData = {
+        UserPoolId: "us-east-1_g4SvG2N1E", 
+        ClientId: "4quucr17sofk8c874jlhm29g0o"  
+      };
+
+      const userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+
+      const attributeList = [];
+
+      attributeList.push(
+        new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "email", Value: email }),
+        new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "given_name", Value: firstname }),
+        new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "family_name", Value: lastname })
+      );
+
+      userPool.signUp(email, password, attributeList, null, function (err, result) {
+        if (err) {
+          console.error(err);
+          message.textContent = "❌ " + (err.message || JSON.stringify(err));
+          return;
+        }
+
+        console.log("User name is " + result.user.getUsername());
+        message.style.color = "green";
+        message.textContent = "✅ Registration successful! Please check your email to confirm your account.";
+
+        setTimeout(() => {
+          window.location.href = "login.html";
+        }, 2000);
+      });
+    }
+  </script>
+</body>
+</html>

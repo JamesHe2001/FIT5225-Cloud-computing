@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>BirdTag - Upload Media</title>
+  <link rel="stylesheet" href="../css/common.css" />
+</head>
+
+<body>
+  <div class="main-box">
+    <img src="../Picture/MonashLogo.png" alt="Monash Logo" />
+    <h2>Upload Bird Media</h2>
+
+    <input type="file" id="fileInput" />
+    <button onclick="uploadFile()">⬆ Upload</button>
+
+    <div id="uploadStatus"></div>
+
+    <a class="btn" href="dashboard.html">← Back to Dashboard</a>
+  </div>
+
+  <script>
+    async function uploadFile() {
+      const file = document.getElementById("fileInput").files[0];
+      const statusDiv = document.getElementById("uploadStatus");
+
+      if (!file) {
+        alert("Please select a file to upload.");
+        return;
+      }
+
+      statusDiv.innerHTML = "Uploading file...";
+
+      const accessToken = localStorage.getItem("access_token");
+      if (!accessToken) {
+        alert("No access token found. Please login first.");
+        return;
+      }
+
+      try {
+        const formData = new FormData();
+        formData.append("file", file);
+
+        const response = await fetch("http://localhost:8000/upload", {
+          method: "POST",
+          body: formData,
+          headers: {
+            Authorization: "Bearer " + accessToken
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error(`Failed to upload file: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        statusDiv.innerHTML = "✅ Upload successful! File ID: " + data.file_id;
+        console.log("Upload successful!", data);
+
+      } catch (error) {
+        console.error("Error during upload:", error);
+        statusDiv.innerHTML = "❌ Error occurred during upload. See console for details.";
+      }
+    }
+  </script>
+</body>
+</html>

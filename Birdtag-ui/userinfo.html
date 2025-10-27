@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>BirdTag - user info update</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #d299c2, #fef9d7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .card {
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      width: 400px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #444;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 20px;
+      background-color: #f082ac;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #e26ea1;
+    }
+
+    .success {
+      color: green;
+      text-align: center;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>📋 Please submit user info</h2>
+
+    <label for="bird">Preffered Bird Type：</label>
+    <input type="text" id="bird" placeholder="Such as：parrot" />
+
+    <label for="location">region：</label>
+    <input type="text" id="location" placeholder="如：Victoria, Melbourne" />
+
+    <label for="camera">Have a camera device?：</label>
+    <select id="camera">
+      <option value="yes">yes</option>
+      <option value="no">no</option>
+    </select>
+
+    <button onclick="submitInfo()">Submit</button>
+
+    <p id="status" class="success"></p>
+  </div>
+
+  <script>
+    function submitInfo() {
+      const bird = document.getElementById("bird").value;
+      const location = document.getElementById("location").value;
+      const camera = document.getElementById("camera").value;
+      const status = document.getElementById("status");
+
+      if (!bird || !location) {
+        alert("Please fill all fields！");
+        return;
+      }
+
+      const userInfo = {
+        preferredBird: bird,
+        region: location,
+        hasCamera: camera
+      };
+
+      // 
+      localStorage.setItem("userInfo", JSON.stringify(userInfo));
+      status.innerText = "✅ Information submitted！";
+
+      // window.location.href = "thankyou.html";
+    }
+  </script>
+</body>
+</html>

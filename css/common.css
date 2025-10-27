@@ -1,0 +1,71 @@
+/* common.css */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    padding: 40px;
+    margin: 0;
+  }
+  
+  .main-box {
+    max-width: 600px;
+    margin: 40px auto;
+    background-color: #ffffff;
+    padding: 30px 40px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    text-align: center;
+  }
+  
+  .main-box img {
+    width: 120px;
+    margin-bottom: 20px;
+  }
+  
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="file"],
+  input[type="number"],
+  button {
+    width: 100%;
+    padding: 10px;
+    margin: 10px auto;
+    box-sizing: border-box;
+    font-size: 16px;
+    display: block;
+  }
+  
+  button {
+    background-color: #0077c8;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  button:hover {
+    background-color: #005fa3;
+  }
+  
+  .main-btn {
+    width: 100%;
+    padding: 12px;
+    margin-top: 20px;
+    background-color: #0077c8;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+    display: inline-block;
+    box-sizing: border-box;
+  }
+  
+  .main-btn:hover {
+    background-color: #005fa3;
+  }
+  
+  .status {
+    margin-top: 15px;
+    color: green;
+  }

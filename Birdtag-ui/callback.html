@@ -1,0 +1,29 @@
+<!-- callback.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Login Callback - BirdTag</title>
+  <script>
+    window.onload = () => {
+      const hash = window.location.hash.substring(1);
+      const params = new URLSearchParams(hash);
+      const idToken = params.get("id_token");
+      const accessToken = params.get("access_token");
+
+      if (idToken && accessToken) {
+        localStorage.setItem("id_token", idToken);
+        localStorage.setItem("access_token", accessToken);
+        alert("✅ Login successful!");
+        window.location.href = "upload.html"; 
+      } else {
+        alert("❌ Login failed or token missing.");
+        window.location.href = "login.html";
+      }
+    };
+  </script>
+</head>
+<body>
+  <p>Processing login...</p>
+</body>
+</html>

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Logout - BirdTag</title>
+  <script>
+    window.onload = () => {
+      localStorage.removeItem("id_token");
+      localStorage.removeItem("access_token");
+
+      window.location.href = "login.html";
+    };
+  </script>
+</head>
+<body>
+  <p>Logging out...</p>
+</body>
+</html>

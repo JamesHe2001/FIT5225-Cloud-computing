@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>File Info Result - BirdTag</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 50px;
+        }
+    </style>
+</head>
+<body>
+    <h2>File Info Result</h2>
+    <div id="result"></div>
+
+    <script>
+        async function fetchFileInfo() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const fileId = urlParams.get('file_id');
+
+            if (!fileId) {
+                document.getElementById('result').innerText = 'No File ID provided.';
+                return;
+            }
+
+            try {
+                const response = await fetch(`http://localhost:8000/file-info?file_id=${encodeURIComponent(fileId)}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+
+                document.getElementById('result').innerHTML = `
+                    <p><strong>File ID:</strong> ${data.file_id}</p>
+                    <p><strong>Full URL:</strong> <a href="${data.full_url}" target="_blank">${data.full_url}</a></p>
+                    <p><strong>File Type:</strong> ${data.file_type}</p>
+                    <p><strong>Tags:</strong> ${Object.entries(data.tags).map(([k,v]) => `${k}: ${v}`).join(', ')}</p>
+                `;
+            } catch (error) {
+                console.error("Error fetching file info:", error);
+                document.getElementById('result').innerText = 'Error fetching file info.';
+            }
+        }
+
+        fetchFileInfo();
+    </script>
+</body>
+</html>
