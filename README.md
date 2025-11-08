@@ -78,5 +78,4 @@
 
 📌 Notes
 	•	This project uses only serverless AWS services within Academy limitations.
-	•	All code is contained in a private GitHub repository and is not publicly available to ensure academic integrity.
 	•	The pretrained models used for tagging are sourced from BirdNET and other open-source frameworks.
